@@ -1,16 +1,12 @@
 <template>
   <div id="app">
-    <Index></Index>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-  const Index = () => import('./components/Index')
   export default {
-    name: 'App',
-    components: {
-      Index
-    }
+    name: 'App'
   }
 </script>
 

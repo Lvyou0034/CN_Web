@@ -2,24 +2,24 @@
   <el-container>
     <el-header><div>网络监控系统</div></el-header>
     <el-container>
-      <el-aside width="200px">
-        <el-menu default-active="2">
-          <el-menu-item index="2">
+      <el-aside width="200px" >
+        <el-menu default-active="2" router>
+          <el-menu-item index="users">
 <!--            <i class="el-icon-menu"></i>-->
             <span slot="title">用户管理</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="stats">
 <!--            <i class="el-icon-menu"></i>-->
             <span slot="title">网络流量监控</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="3">
 <!--            <i class="el-icon-menu"></i>-->
             <span slot="title">敏感词汇检测</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
-        <h1>（内容为空）</h1>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </el-container>
@@ -60,7 +60,7 @@
     right: 0;
     top: 60px;
     bottom: 0;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     background-color: #E9EEF3;
   }
   .el-menu-item {
