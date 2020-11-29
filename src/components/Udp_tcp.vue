@@ -25,6 +25,7 @@
 </template>
 
 <script>
+  import axios from "axios";
   export default {
     name: "Udp_tcp",
     data() {
@@ -63,8 +64,29 @@
         ]
       }
     },
+    methods: {
+      getUserData() {
+        let url = 'http://127.0.0.1:5000/udp_tcp'
+        axios.get('http://127.0.0.1:5000/udp_tcp')
+          .then(res => {
+            if (res.status && this.$route.path == '/udp_tcp')
+            {
+              console.log(this.tableData)
+              this.tableData = res.data
+              setTimeout(() => {
+                this.getUserData()
+              },5000)
+            }else{
+              console.log('请求失败')
+              return
+            }
+          })
+      }
+    },
+    created() {
+      this.getUserData()
+    },
     mounted() {
-      console.log(this.$route)
     }
   }
 </script>

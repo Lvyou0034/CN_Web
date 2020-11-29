@@ -4,13 +4,12 @@
       <el-form-item label="过滤器">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">搜索</el-button>
-      </el-form-item>
+<!--      <el-form-item>-->
+<!--        <el-button type="primary" @click="onSubmit">搜索</el-button>-->
+<!--      </el-form-item>-->
     </el-form>
     <el-table
-      :data="voc"
-      height="100%"
+      :data="this.search()"
       border
       style="width: 100%">
       <el-table-column
@@ -33,26 +32,79 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: "Sensitive_voc",
     data() {
       return {
-        voc:[
+        vocs:[
           {
             source: '127.0.0.1',
             voc: 'haha',
             time: '2020/11/28'
+          },
+          {
+            source: '127.0.0.1',
+            voc: 'fuck',
+            time: '2020/11/28'
+          },
+          {
+            source: '127.0.0.1',
+            voc: 'haha',
+            time: '2020/11/28'
+          },
+          {
+            source: '127.0.0.1',
+            voc: 'haha',
+            time: '2020/11/28'
+          },
+          {
+            source: '127.0.0.1',
+            voc: 'Ohhhh',
+            time: '2020/11/28'
           }
         ],
+        sen_voc:[],
         form:{
           name: ''
         }
       }
     },
     methods: {
-      onSubmit() {
-        console.log('submit!')
-      }
+      search() {
+        for(let item of this.vocs) {
+          if(this.form.name == '')
+            return this.vocs
+          else {
+            let res = this.vocs.filter(n => {
+              return n.voc == this.form.name
+            })
+            return res
+          }
+        }
+      },
+      getUserData() {
+        let url = 'http://127.0.0.1:5000/sensitive_voc'
+        axios.get('http://127.0.0.1:5000/sensitive_voc')
+          .then(res => {
+            if (res.status && this.$route.path == '/sensitive_voc')
+            {
+              console.log(this.vocs)
+              this.vocs = res.data
+              setTimeout(() => {
+                this.getUserData()
+              },5000)
+            }else{
+              console.log('请求失败')
+              return
+            }
+          })
+      },
+    },
+    mounted() {
+    },
+    created() {
+      this.getUserData()
     }
   }
 </script>
