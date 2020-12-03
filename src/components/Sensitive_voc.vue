@@ -7,6 +7,12 @@
 <!--      <el-form-item>-->
 <!--        <el-button type="primary" @click="onSubmit">搜索</el-button>-->
 <!--      </el-form-item>-->
+      <el-form-item label="添加敏感词">
+        <el-input v-model="voc_add"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="addSubmit">添加</el-button>
+      </el-form-item>
     </el-form>
     <el-table
       :data="this.search()"
@@ -37,37 +43,38 @@
     name: "Sensitive_voc",
     data() {
       return {
+        voc_add:'',
         vocs:[
-          // {
-          //   sourceip:'',
-          //   dirtyword:'',
-          //   time:''
-          // }
           {
-            sourceip: '127.0.0.1',
-            dirtyword: 'haha',
-            time: '2020/11/28'
-          },
-          {
-            sourceip: '127.0.0.1',
-            dirtyword: 'nm',
-            time: '2020/11/28'
-          },
-          {
-            sourceip: '127.0.0.1',
-            dirtyword: 'shab',
-            time: '2020/11/28'
-          },
-          {
-            sourceip: '127.0.0.1',
-            dirtyword: 'tmd',
-            time: '2020/11/28'
-          },
-          {
-            sourceip: '127.0.0.1',
-            dirtyword: 'haha',
-            time: '2020/11/28'
+            sourceip: '',
+            dirtyword:'',
+            time:''
           }
+          // {
+          //   source: '127.0.0.1',
+          //   voc: 'haha',
+          //   time: '2020/11/28'
+          // },
+          // {
+          //   source: '127.0.0.1',
+          //   voc: 'fuck',
+          //   time: '2020/11/28'
+          // },
+          // {
+          //   source: '127.0.0.1',
+          //   voc: 'haha',
+          //   time: '2020/11/28'
+          // },
+          // {
+          //   source: '127.0.0.1',
+          //   voc: 'haha',
+          //   time: '2020/11/28'
+          // },
+          // {
+          //   source: '127.0.0.1',
+          //   voc: 'Ohhhh',
+          //   time: '2020/11/28'
+          // }
         ],
         sen_voc:[],
         form:{
@@ -89,8 +96,9 @@
         }
       },
       getUserData() {
-        let url = 'http://39.108.102.157:8088/dirtyword'
-        axios.get(url)
+        // let url = 'http://127.0.0.1:5000/sensitive_voc'
+        let url = '39.108.102.157:8088/dirtyword'
+        axios.get('http://39.108.102.157:8088/dirtyword')
           .then(res => {
             if (res.status && this.$route.path == '/sensitive_voc')
             {
@@ -105,6 +113,14 @@
             }
           })
       },
+      addSubmit() {
+        let url = 'http://39.108.102.157:8088/dirtyword/' + this.voc_add
+        axios.get(url).then(
+          res => {
+
+          }
+        )
+      }
     },
     mounted() {
     },

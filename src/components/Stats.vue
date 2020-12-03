@@ -12,20 +12,22 @@
     name: 'Echarts',
     data() {
       return {
-        myChart:{},
-        x_data:[],
-        s_data:[],
-        opinionData: [],
-        charts:''
+        x_data:["用户A的ip","用户B的ip","用户C的ip","用户D的ip","用户E的ip","用户F的ip"],
+        s_data:[5, 20, 36, 10, 10, 20]
+      }
+    },
+    watch: {
+      x_data() {
+        this.myEcharts1()
+      },
+      s_data() {
+        this.myEcharts1()
       }
     },
     methods:{
-      myEcharts1(x,s){
-        console.log(x)
-        console.log(s)
+      myEcharts1(){
         // 基于准备好的dom，初始化echarts实例
-        // let myChart = this.$echarts.init(document.getElementById('top_left'));
-        this.myChart = this.$echarts.init(document.getElementById('top_left'))
+        let myChart = this.$echarts.init(document.getElementById('top_left'));
         // 指定图表的配置项和数据
         let option = {
           title: {
@@ -36,19 +38,72 @@
           //   data:['销量']
           // },
           xAxis: {
-            // data: ["10.30.16.137", "10.30.168.119", "10.30.176.16"]
-            data:this.x
+            data: this.x_data
+            // data:[]
           },
           yAxis: {},
           series: [{
             // name: '？',
             type: 'bar',
-            // data: [4, 75, 4]
-            data:this.s
+            data: this.s_data,
+            // data:[]
+            itemStyle: {
+              normal: {
+                //这里是重点
+                color: function(params) {
+                  //注意，如果颜色太少的话，后面颜色不会自动循环，最好多定义几个颜色
+                  let colorList = ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83', '#ca8622'];
+                  if (params.dataIndex >= colorList.length) {
+                    let index = params.dataIndex - colorList.length;
+                    return colorList[index]
+                  }
+                  return colorList[params.dataIndex]
+                }
+              }
+            }
           }]
         }
+        myChart.setOption(option)
         // 使用刚指定的配置项和数据显示图表。
-        this.myChart.setOption(option)
+        // this.myChart.setOption(option)
+        // axios.get('http://39.108.102.157:8088/cnt/tcp')
+        //   .then(res => {
+        //     if (res.status && this.$route.path == '/stats'){
+        //       let formdata = res.data
+        //       console.log(formdata[0].count)
+        //       console.log(formdata[0].ip)
+        //       myChart.setOption({
+        //         xAxis:{
+        //           data:[formdata[0].ip]
+        //         },
+        //         series: [{
+        //           type: 'bar',
+        //           data: [parseInt(formdata[0].count)]
+        //         }]
+        //       })
+        //     }
+        //   })
+      },
+      getChart1() {
+        let url = 'http://39.108.102.157:8088/cnt/tcp'
+        let myUrl = 'http://127.0.0.1:5000/udp'
+        axios.get(myUrl)
+          .then(res => {
+            if (res.status && this.$route.path == '/stats'){
+              let formdata = res.data
+              console.log(formdata)
+              // console.log(formdata[0].count)
+              // console.log(formdata[0].ip)
+              this.x_data = formdata[0]
+              this.s_data = formdata[1]
+              setTimeout(() => {
+                this.getChart1()
+              },5000)
+            }else{
+              console.log("连接失败")
+              return
+            }
+          })
       },
       myEcharts2(){
         let myChart = this.$echarts.init(document.getElementById('top_right'));
@@ -157,91 +212,16 @@
           ]
         }
         myChart.setOption(option)
-      },
-      getChart1Data() {
-        let url = 'http://39.108.102.157:8088/cnt/udp'
-        let x
-        let s
-        axios.get(url)
-          .then(res => {
-            if (res.status && this.$route.path == '/stats'){
-              let i = 0
-              for (let item of res.data) {
-                if (i >= 3) break;
-                // console.log(item.ip)
-                // this.data[i] = item.ip + ""
-                this.x_data.push(item.ip + "")
-                // this.s_data[i] = parseInt(item.count)
-                this.s_data.push(parseInt(item.count))
-                i = i + 1
-              }
-              x = JSON.stringify(this.x_data)
-              console.log(x)
-              s = JSON.stringify(this.s_data)
-              console.log(s)
-            }
-          })
-         this.myEcharts1(this.x,this.s)
-      },
-      drawLine(id) {
-        this.charts = this.$echarts.init(document.getElementById(id));
-        this.charts.setOption({
-          tooltip: {
-            trigger: "axis",
-          },
-          legend: {
-            data: ["近七日收益"],
-          },
-          grid: {
-            left: "3%",
-            right: "4%",
-            bottom: "3%",
-            containLabel: true,
-          },
-
-          toolbox: {
-            feature: {
-              saveAsImage: {},
-            },
-          },
-          xAxis: {
-            type: "category",
-            boundaryGap: false,
-            data: this.x_data,
-          },
-          yAxis: {
-            type: "value",
-          },
-
-          series: [
-            {
-              name: "近七日收益",
-              type: "line",
-              stack: "总量",
-              data: this.opinionData,
-            },
-          ],
-        });
-      },
-      getData() {
-        axios.get('http://127.0.0.1:5000/chart').then(response => {
-          console.log(response.data);
-          this.x_data = response.data.categories;
-          this.opinionData =response.data.data;
-          this.drawLine('top_left')
-        }, response => {
-          console.log("error");
-        });
-      },
+      }
     },
     mounted() {
-      // this.myEcharts1()
-      // this.getChart1Data()
+      this.myEcharts1()
       // this.myEcharts2()
       // this.myEcharts3()
-      this.$nextTick(function () {
-        this.getData()
-      })
+      this.getChart1()
+    },
+    created() {
+      // this.myEcharts1()
     }
   }
 </script>
