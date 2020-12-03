@@ -13,12 +13,12 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="source"
+        prop="sourceip"
         label="源IP地址"
         width="auto">
       </el-table-column>
       <el-table-column
-        prop="voc"
+        prop="dirtyword"
         label="敏感词"
         width="auto">
       </el-table-column>
@@ -38,29 +38,34 @@
     data() {
       return {
         vocs:[
+          // {
+          //   sourceip:'',
+          //   dirtyword:'',
+          //   time:''
+          // }
           {
-            source: '127.0.0.1',
-            voc: 'haha',
+            sourceip: '127.0.0.1',
+            dirtyword: 'haha',
             time: '2020/11/28'
           },
           {
-            source: '127.0.0.1',
-            voc: 'fuck',
+            sourceip: '127.0.0.1',
+            dirtyword: 'nm',
             time: '2020/11/28'
           },
           {
-            source: '127.0.0.1',
-            voc: 'haha',
+            sourceip: '127.0.0.1',
+            dirtyword: 'shab',
             time: '2020/11/28'
           },
           {
-            source: '127.0.0.1',
-            voc: 'haha',
+            sourceip: '127.0.0.1',
+            dirtyword: 'tmd',
             time: '2020/11/28'
           },
           {
-            source: '127.0.0.1',
-            voc: 'Ohhhh',
+            sourceip: '127.0.0.1',
+            dirtyword: 'haha',
             time: '2020/11/28'
           }
         ],
@@ -77,15 +82,15 @@
             return this.vocs
           else {
             let res = this.vocs.filter(n => {
-              return n.voc == this.form.name
+              return n.dirtyword == this.form.name
             })
             return res
           }
         }
       },
       getUserData() {
-        let url = 'http://127.0.0.1:5000/sensitive_voc'
-        axios.get('http://127.0.0.1:5000/sensitive_voc')
+        let url = 'http://39.108.102.157:8088/dirtyword'
+        axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/sensitive_voc')
             {

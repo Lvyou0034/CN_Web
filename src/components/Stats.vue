@@ -7,12 +7,25 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'Echarts',
+    data() {
+      return {
+        myChart:{},
+        x_data:[],
+        s_data:[],
+        opinionData: [],
+        charts:''
+      }
+    },
     methods:{
-      myEcharts1(){
+      myEcharts1(x,s){
+        console.log(x)
+        console.log(s)
         // 基于准备好的dom，初始化echarts实例
-        let myChart = this.$echarts.init(document.getElementById('top_left'));
+        // let myChart = this.$echarts.init(document.getElementById('top_left'));
+        this.myChart = this.$echarts.init(document.getElementById('top_left'))
         // 指定图表的配置项和数据
         let option = {
           title: {
@@ -23,17 +36,19 @@
           //   data:['销量']
           // },
           xAxis: {
-            data: ["用户A","用户B","用户C","用户D","用户E","用户F"]
+            // data: ["10.30.16.137", "10.30.168.119", "10.30.176.16"]
+            data:this.x
           },
           yAxis: {},
           series: [{
             // name: '？',
             type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            // data: [4, 75, 4]
+            data:this.s
           }]
         }
         // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option)
+        this.myChart.setOption(option)
       },
       myEcharts2(){
         let myChart = this.$echarts.init(document.getElementById('top_right'));
@@ -142,12 +157,91 @@
           ]
         }
         myChart.setOption(option)
-      }
+      },
+      getChart1Data() {
+        let url = 'http://39.108.102.157:8088/cnt/udp'
+        let x
+        let s
+        axios.get(url)
+          .then(res => {
+            if (res.status && this.$route.path == '/stats'){
+              let i = 0
+              for (let item of res.data) {
+                if (i >= 3) break;
+                // console.log(item.ip)
+                // this.data[i] = item.ip + ""
+                this.x_data.push(item.ip + "")
+                // this.s_data[i] = parseInt(item.count)
+                this.s_data.push(parseInt(item.count))
+                i = i + 1
+              }
+              x = JSON.stringify(this.x_data)
+              console.log(x)
+              s = JSON.stringify(this.s_data)
+              console.log(s)
+            }
+          })
+         this.myEcharts1(this.x,this.s)
+      },
+      drawLine(id) {
+        this.charts = this.$echarts.init(document.getElementById(id));
+        this.charts.setOption({
+          tooltip: {
+            trigger: "axis",
+          },
+          legend: {
+            data: ["近七日收益"],
+          },
+          grid: {
+            left: "3%",
+            right: "4%",
+            bottom: "3%",
+            containLabel: true,
+          },
+
+          toolbox: {
+            feature: {
+              saveAsImage: {},
+            },
+          },
+          xAxis: {
+            type: "category",
+            boundaryGap: false,
+            data: this.x_data,
+          },
+          yAxis: {
+            type: "value",
+          },
+
+          series: [
+            {
+              name: "近七日收益",
+              type: "line",
+              stack: "总量",
+              data: this.opinionData,
+            },
+          ],
+        });
+      },
+      getData() {
+        axios.get('http://127.0.0.1:5000/chart').then(response => {
+          console.log(response.data);
+          this.x_data = response.data.categories;
+          this.opinionData =response.data.data;
+          this.drawLine('top_left')
+        }, response => {
+          console.log("error");
+        });
+      },
     },
     mounted() {
-      this.myEcharts1()
-      this.myEcharts2()
-      this.myEcharts3()
+      // this.myEcharts1()
+      // this.getChart1Data()
+      // this.myEcharts2()
+      // this.myEcharts3()
+      this.$nextTick(function () {
+        this.getData()
+      })
     }
   }
 </script>
