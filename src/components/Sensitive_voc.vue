@@ -50,31 +50,6 @@
             dirtyword:'',
             time:''
           }
-          // {
-          //   source: '127.0.0.1',
-          //   voc: 'haha',
-          //   time: '2020/11/28'
-          // },
-          // {
-          //   source: '127.0.0.1',
-          //   voc: 'fuck',
-          //   time: '2020/11/28'
-          // },
-          // {
-          //   source: '127.0.0.1',
-          //   voc: 'haha',
-          //   time: '2020/11/28'
-          // },
-          // {
-          //   source: '127.0.0.1',
-          //   voc: 'haha',
-          //   time: '2020/11/28'
-          // },
-          // {
-          //   source: '127.0.0.1',
-          //   voc: 'Ohhhh',
-          //   time: '2020/11/28'
-          // }
         ],
         sen_voc:[],
         form:{
@@ -97,8 +72,8 @@
       },
       getUserData() {
         // let url = 'http://127.0.0.1:5000/sensitive_voc'
-        let url = '39.108.102.157:8088/dirtyword'
-        axios.get('http://39.108.102.157:8088/dirtyword')
+        let url = 'http://39.108.102.157:8088/dirtyword'
+        axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/sensitive_voc')
             {

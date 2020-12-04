@@ -10,15 +10,15 @@
           </el-menu-item>
           <el-menu-item index="udp_tcp">
             <!--            <i class="el-icon-menu"></i>-->
-            <span slot="title">TCP/UDP统计</span>
+            <span slot="title">TCP/UDP统计表</span>
+          </el-menu-item>
+          <el-menu-item index="stats">
+            <!--            <i class="el-icon-menu"></i>-->
+            <span slot="title">TCP/UDP统计图</span>
           </el-menu-item>
           <el-menu-item index="sensitive_voc">
             <!--            <i class="el-icon-menu"></i>-->
             <span slot="title">敏感词汇检测</span>
-          </el-menu-item>
-          <el-menu-item index="stats">
-<!--            <i class="el-icon-menu"></i>-->
-            <span slot="title">网络流量监控</span>
           </el-menu-item>
         </el-menu>
       </el-aside>

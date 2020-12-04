@@ -5,18 +5,18 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="time"
-        label="接入时间"
-        width="auto">
-      </el-table-column>
-      <el-table-column
-        prop="username"
-        label="用户名"
-        width="auto">
-      </el-table-column>
-      <el-table-column
         prop="ip"
         label="IP地址"
+        width="auto">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="MAC地址"
+        width="auto">
+      </el-table-column>
+      <el-table-column
+        prop="time"
+        label="接入时间"
         width="auto">
       </el-table-column>
     </el-table>
@@ -35,7 +35,7 @@
     methods: {
       getUserData() {
         let url = 'http://127.0.0.1:5000/user_data'
-        axios.get('http://127.0.0.1:5000/user_data')
+        axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/users')
             {

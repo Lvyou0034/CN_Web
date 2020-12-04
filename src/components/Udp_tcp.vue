@@ -1,23 +1,35 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="tcp_data"
       height="100%"
       border
       style="width: 100%">
       <el-table-column
-        prop="source"
-        label="源IP地址"
+        prop="ip"
+        label="IP地址"
         width="auto">
       </el-table-column>
       <el-table-column
-        prop="destination"
-        label="目的IP地址"
+        prop="count"
+        label="TCP包数量"
+        width="auto">
+      </el-table-column>
+    </el-table>
+    <br><br>
+    <el-table
+      :data="udp_data"
+      height="100%"
+      border
+      style="width: 100%">
+      <el-table-column
+        prop="ip"
+        label="IP地址"
         width="auto">
       </el-table-column>
       <el-table-column
-        prop="time"
-        label="时间"
+        prop="count"
+        label="UDP包数量"
         width="auto">
       </el-table-column>
     </el-table>
@@ -30,51 +42,48 @@
     name: "Udp_tcp",
     data() {
       return {
-        tableData: [
+        tcp_data: [
           {
-            source: '192.168.0.1',
-            destination: '192.168.0.1',
-            time: '2020/11/28'
+            ip: '192.168.0.1',
+            count: 10,
           },
+        ],
+        udp_data: [
           {
-            source: '192.168.0.1',
-            destination: '192.168.0.1',
-            time: '2020/11/28'
-          },
-          {
-            source: '192.168.0.1',
-            destination: '192.168.0.1',
-            time: '2020/11/28'
-          },
-          {
-            source: '192.168.0.1',
-            destination: '192.168.0.1',
-            time: '2020/11/28'
-          },
-          {
-            source: '192.168.0.1',
-            destination: '192.168.0.1',
-            time: '2020/11/28'
-          },
-          {
-            source: '192.168.0.1',
-            destination: '192.168.0.1',
-            time: '2020/11/28'
+            ip: '192.168.0.1',
+            count: 11,
           }
         ]
       }
     },
     methods: {
-      getUserData() {
-        let url = 'http://127.0.0.1:5000/udp_tcp'
-        axios.get('http://127.0.0.1:5000/udp_tcp')
+      get_tcp_data() {
+        let url = 'http://127.0.0.1:5000/tcp'
+        axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/udp_tcp')
             {
-              console.log(this.tableData)
-              this.tableData = res.data
+              console.log(this.tcp_data)
+              this.tcp_data = res.data
               setTimeout(() => {
-                this.getUserData()
+                this.get_tcp_data()
+              },5000)
+            }else{
+              console.log('请求失败')
+              return
+            }
+          })
+      },
+      get_udp_data() {
+        let url = 'http://127.0.0.1:5000/udp'
+        axios.get(url)
+          .then(res => {
+            if (res.status && this.$route.path == '/udp_tcp')
+            {
+              console.log(this.udp_data)
+              this.udp_data = res.data
+              setTimeout(() => {
+                this.get_tcp_data()
               },5000)
             }else{
               console.log('请求失败')
@@ -84,7 +93,8 @@
       }
     },
     created() {
-      this.getUserData()
+      this.get_tcp_data()
+      this.get_udp_data()
     },
     mounted() {
     }
