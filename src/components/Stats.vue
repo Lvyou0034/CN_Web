@@ -87,7 +87,7 @@
       get_tcp_data() {
         let url = 'http://39.108.102.157:8088/cnt/tcp'
         let myUrl = 'http://127.0.0.1:5000/tcp'
-        axios.get(myUrl)
+        axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/stats'){
               let form_data = res.data
@@ -157,7 +157,7 @@
       get_udp_data() {
         let url = 'http://39.108.102.157:8088/cnt/udp'
         let myUrl = 'http://127.0.0.1:5000/udp'
-        axios.get(myUrl)
+        axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/stats'){
               let form_data = res.data

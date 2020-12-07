@@ -90,11 +90,19 @@
       },
       addSubmit() {
         let url = 'http://39.108.102.157:8088/dirtyword/' + this.voc_add
-        axios.get(url).then(
-          res => {
-
-          }
-        )
+        if (this.voc_add) {
+          axios.get(url).then(
+            res => {
+              if (res.status) {
+                alert("添加成功")
+              }else {
+                alert("添加失败")
+              }
+            }
+          )
+        }else {
+          alert("添加敏感词不能为空")
+        }
       }
     },
     mounted() {

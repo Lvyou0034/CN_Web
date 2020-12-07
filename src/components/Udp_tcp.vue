@@ -2,7 +2,7 @@
   <div>
     <el-table
       :data="tcp_data"
-      height="100%"
+      height="300px"
       border
       style="width: 100%">
       <el-table-column
@@ -19,7 +19,7 @@
     <br><br>
     <el-table
       :data="udp_data"
-      height="100%"
+      height="300px"
       border
       style="width: 100%">
       <el-table-column
@@ -58,7 +58,7 @@
     },
     methods: {
       get_tcp_data() {
-        let url = 'http://127.0.0.1:5000/tcp'
+        let url = 'http://39.108.102.157:8088/cnt/tcp'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/udp_tcp')
@@ -75,7 +75,7 @@
           })
       },
       get_udp_data() {
-        let url = 'http://127.0.0.1:5000/udp'
+        let url = 'http://39.108.102.157:8088/cnt/udp'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/udp_tcp')

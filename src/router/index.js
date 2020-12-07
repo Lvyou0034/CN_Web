@@ -6,12 +6,13 @@ import Stats from "../components/Stats";
 import Udp_tcp from "../components/Udp_tcp";
 import Sensitive_voc from "../components/Sensitive_voc";
 import TestChart from "../components/TestChart";
+import Home from "../components/Home";
 Vue.use(Router)
 export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index'
+      redirect: '/home'
     },
     {
       path: '/index',
@@ -32,6 +33,10 @@ export default new Router({
         {
           path: '/sensitive_voc',
           component: Sensitive_voc
+        },
+        {
+          path: '/home',
+          component: Home
         }
       ]
     },
