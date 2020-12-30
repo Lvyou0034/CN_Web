@@ -14,11 +14,6 @@
         label="MAC地址"
         width="auto">
       </el-table-column>
-      <el-table-column
-        prop="time"
-        label="接入时间"
-        width="auto">
-      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -34,7 +29,7 @@
     },
     methods: {
       getUserData() {
-        let url = 'http://127.0.0.1:5000/user_data'
+        let url = 'http://49.234.108.161:5000/user_data'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/users')

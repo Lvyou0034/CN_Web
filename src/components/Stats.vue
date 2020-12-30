@@ -86,7 +86,6 @@
       },
       get_tcp_data() {
         let url = 'http://39.108.102.157:8088/cnt/tcp'
-        let myUrl = 'http://127.0.0.1:5000/tcp'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/stats'){
