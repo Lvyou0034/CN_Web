@@ -12,10 +12,10 @@
     name: 'Echarts',
     data() {
       return {
-        tcp_x_data:["用户A的ip","用户B的ip","用户C的ip","用户D的ip","用户E的ip","用户F的ip","用户G的ip"],
-        tcp_s_data:[5, 20, 36, 10, 10, 20, 22],
-        udp_x_data:["用户A的ip","用户B的ip","用户C的ip","用户D的ip","用户E的ip","用户F的ip"],
-        udp_s_data:[5, 20, 36, 10, 10, 20]
+        tcp_x_data:[],
+        tcp_s_data:[],
+        udp_x_data:[],
+        udp_s_data:[]
       }
     },
     watch: {
@@ -85,7 +85,7 @@
         myChart.setOption(option)
       },
       get_tcp_data() {
-        let url = 'http://39.108.102.157:8088/cnt/tcp'
+        let url = 'http://49.234.108.161:5000/cnt/tcp'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/stats'){
@@ -154,7 +154,7 @@
         myChart.setOption(option)
       },
       get_udp_data() {
-        let url = 'http://39.108.102.157:8088/cnt/udp'
+        let url = 'http://49.234.108.161:5000/cnt/udp'
         let myUrl = 'http://127.0.0.1:5000/udp'
         axios.get(url)
           .then(res => {

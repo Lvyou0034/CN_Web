@@ -43,22 +43,14 @@
     data() {
       return {
         tcp_data: [
-          {
-            ip: '192.168.0.1',
-            count: 10,
-          },
         ],
         udp_data: [
-          {
-            ip: '192.168.0.1',
-            count: 11,
-          }
         ]
       }
     },
     methods: {
       get_tcp_data() {
-        let url = 'http://39.108.102.157:8088/cnt/tcp'
+        let url = 'http://49.234.108.161:5000/cnt/tcp0'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/udp_tcp')
@@ -75,7 +67,7 @@
           })
       },
       get_udp_data() {
-        let url = 'http://39.108.102.157:8088/cnt/udp'
+        let url = 'http://49.234.108.161:5000/cnt/udp0'
         axios.get(url)
           .then(res => {
             if (res.status && this.$route.path == '/udp_tcp')

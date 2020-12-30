@@ -12,7 +12,34 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="addSubmit">添加</el-button>
+        <el-button type="primary" @click="getdirtywordlist">查看当前敏感词库</el-button>
       </el-form-item>
+      <el-dialog
+        title="敏感词库"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose">
+        <el-table
+          :data="dirtywordlist"
+          height="300px"
+          border
+          style="width: 100%">
+          <el-table-column
+            prop="dirtyword"
+            label="敏感词"
+            width="auto">
+          </el-table-column>
+          <el-table-column
+            prop="updatetime"
+            label="时间"
+            width="auto">
+          </el-table-column>
+        </el-table>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </el-form>
     <el-table
       :data="this.search()"
@@ -43,12 +70,19 @@
     name: "Sensitive_voc",
     data() {
       return {
+        dialogVisible: false,
         voc_add:'',
         vocs:[
           {
             sourceip: '',
             dirtyword:'',
             time:''
+          }
+        ],
+        dirtywordlist: [
+          {
+            dirtyword:'',
+            updatetime:''
           }
         ],
         sen_voc:[],
@@ -58,6 +92,23 @@
       }
     },
     methods: {
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+      getdirtywordlist() {
+        this.dialogVisible = true
+        let url = 'http://49.234.108.161:5000/dirtyword/get'
+        axios.get(url)
+        .then(res => {
+          if (res.status) {
+            this.dirtywordlist = res.data
+          }
+        })
+      },
       search() {
         for(let item of this.vocs) {
           if(this.form.name == '')
@@ -89,8 +140,20 @@
           })
       },
       addSubmit() {
-        let url = 'http://39.108.102.157:8088/dirtyword/' + this.voc_add
+        let url = 'http://49.234.108.161:5000/dirtyword/add/' + this.voc_add
+        axios.get('http://49.234.108.161:5000/dirtyword/get')
+          .then(res => {
+            if (res.status) {
+              this.dirtywordlist = res.data
+            }
+          })
         if (this.voc_add) {
+          for(let item of this.dirtywordlist) {
+            if (this.voc_add == item.dirtyword) {
+              alert("不能重复添加敏感词")
+              return
+            }
+          }
           axios.get(url).then(
             res => {
               if (res.status) {
